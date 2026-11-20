@@ -39,7 +39,12 @@ def ask_agent(df: pd.DataFrame, question: str, api_key: str) -> str:
             for row in overdue.itertuples()
         ]}
 
-    client = genai.Client(api_key=api_key)
+    
+client = genai.Client(
+    api_key=api_key,
+    http_options=types.HttpOptions(timeout=20000)
+)
+
     response = client.models.generate_content(
         model=os.getenv('GEMINI_MODEL', 'gemini-2.5-flash'),
         contents=question,
